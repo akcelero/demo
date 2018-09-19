@@ -12,8 +12,6 @@ class ViewsTestCase(TestCase):
     example_movie_2 = {"Title":"Test2","Year":"2013","Rated":"TV-MA","Released":"2014-04-04","Runtime":"89 min","Genre":"Drama","Director":"Chris Mason Johnson","Writer":"Chris Mason Johnson (screenplay)","Actors":"Scott Marlowe, Matthew Risch, Evan Boomer, Kevin Clarke","Plot":"In 1985, a gay dance understudy hopes for his on-stage chance while fearing the growing AIDS epidemic.","Language":"English, Portuguese, French","Country":"USA","Awards":"3 wins & 3 nominations.","Poster":"https://m.media-amazon.com/images/M/MV5BMTQwMDU5NDkxNF5BMl5BanBnXkFtZTcwMjk5OTk4OQ@@._V1_SX300.jpg","Ratings":[{"Source":"Internet Movie Database","Value":"6.2/10"},{"Source":"Rotten Tomatoes","Value":"84%"},{"Source":"Metacritic","Value":"70/100"}],"Metascore":"70","imdbRating":"6.2","imdbVotes":"1335","imdbID":"tt2407381","Type":"movie","DVD":"2014-06-17","BoxOffice":"N/A","Production":"Variance Films","Website":"http://www.testthefilm.com","Response":"True"}
     example_movie_no_ratings_2 = {k: v for k, v in example_movie_2.items() if k != 'Ratings'}
 
-    example_all_comments = b'[{"MovieID": 1, "Text": "example"}, {"MovieID": 2, "Text": "example"}]'
-    example_comments_for_movie_2 = b'[{"MovieID": 2, "Text": "example1"}, {"MovieID": 2, "Text": "example2"}]'
 
     def add_movie(self, movie):
         movie = Movie(**movie)
@@ -51,7 +49,7 @@ class ViewsTestCase(TestCase):
         assert(isinstance(response, JsonResponse))
 
         response = client.get('/comments')
-        assert(response.content == self.example_all_comments)
+        assert(len(json.loads(response.content.decode('utf-8'))) == 2)
 
     def test_fetch_comments_for_one_movie(self):
         client = Client()
@@ -66,7 +64,7 @@ class ViewsTestCase(TestCase):
         assert(isinstance(response, JsonResponse))
 
         response = client.get('/comments', {'MovieID': pk_2})
-        assert(response.content == self.example_comments_for_movie_2)
+        assert(len(json.loads(response.content.decode('utf-8'))) == 2)
 
     def test_add_movie_with_no_title(self):
         response = Client().post('/movies', {})
