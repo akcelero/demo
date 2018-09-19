@@ -1,0 +1,5 @@
+gunicorn==19.9.0
+dateparser>=0.7.0
+requests>=2.19.1
+django>=2.1.1
+django-heroku>=0.3.1
