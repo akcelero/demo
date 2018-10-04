@@ -1,7 +1,8 @@
 from django.urls import path, re_path
-from . import views
+from .views import Movies
+from .views import Comments
 
 urlpatterns = [
-    path('movies', views.movies, name='movies'),
-    path('comments', views.comments, name='comments'),
+    path('movies', Movies.as_view(), name='movies'),
+    path('comments', Comments.as_view(), name='comments'),
 ]
