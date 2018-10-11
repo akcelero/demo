@@ -8,6 +8,8 @@ import dateparser
 import requests
 import json
 from .models import Movie, Comment, Rating
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 API_KEY = '744534d'
 
@@ -33,6 +35,11 @@ def get_movie_by_title_db(title):
 
 
 class Movies(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(Movies, self).dispatch(*args, **kwargs)
+
     def post(self, request):
         title = request.POST.get('Title', None)
         if not title:
@@ -103,6 +110,10 @@ class Movies(View):
 class Comments(View):
     def serialize_comment(self, comment):
         return {'MovieID': comment.Movie.pk, 'Text': comment.Text}
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(Comments, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         id_ = request.GET.get('MovieID', None)

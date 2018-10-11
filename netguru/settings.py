@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-import django_heroku
 
 import os
 
@@ -126,7 +125,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+ALLOWED_HOSTS = ['*']
 
-CSRF_COOKIE_SECURE = False
-
-django_heroku.settings(locals())
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
